@@ -1,7 +1,6 @@
 module.exports = {
     entry: {
         app    : './app/assets/js/app.js',
-        vendor : './app/assets/js/vendor.js'
     },
     output: {
         path     : './app/temp/js',

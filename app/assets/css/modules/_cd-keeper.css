@@ -1,0 +1,33 @@
+#cd-keeper {
+    position: relative;
+    margin-top: 40px;
+    aside, main {
+        padding: 25px 5px;
+    }
+    #CD-balance-container {
+        background: #333;
+        color: #EEE;
+
+        ul { padding: 0 }
+        li {
+            @mixin clearfix;
+            list-style-type: none;
+            margin: 5px 40px;
+            text-align: left;
+            span { float: right }
+            &.list-sub-heading {
+                margin: 7px 0;
+                text-align: center;
+            }
+        }
+    }
+    #CD-form-container {
+        background: #CCC;
+    }
+
+    #cash-change {
+        position: absolute;
+        top: 1.2rem;
+        right: 2rem;
+    }
+}

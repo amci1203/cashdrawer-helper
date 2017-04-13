@@ -1,0 +1,24 @@
+.form {
+    &-group-horizontal {
+        @mixin clearfix;
+        padding: 10px 0;
+        input, select { padding: 0 10px }
+    }
+    &-group {
+        @mixin clearfix;
+        padding: 5px 5rem;
+        span, label { float: left }
+        input, select {
+            float: right;
+            width: 200px;
+            padding: 0 10px;
+            background: #EEE;
+            color: #333;
+            border: none;
+            text-align: center;
+            &.light-gray {
+
+            }
+        }
+    }
+}
