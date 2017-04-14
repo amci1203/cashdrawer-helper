@@ -6,7 +6,7 @@ export default function Modal (name, content, isOpaque) {
     const
         modal        = $(`#${name}`),
         openTrigger  = $(`.${name}--open`),
-        closeTrigger = $(`.${name}--close, #${name} .close__button, #${name} .close`);
+        closeTrigger = $(`.${name}--close, #${name} .modal__close-button, #${name} .close`);
 
 
     return (() => {

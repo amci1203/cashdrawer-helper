@@ -23,6 +23,10 @@
     }
     #CD-form-container {
         background: #CCC;
+        form {
+            display: none;
+            &.active { display: block }
+        }
     }
 
     #cash-change {

@@ -39,42 +39,59 @@ export default function Cashdrawer (_opening) {
 	balance.offBy = 0;
 
     const
-        changeModal = Modal('change-modal', (`HEY`), true)
+        changeModal = Modal('change-modal', (`HEY`), true),
+        saleModal   = Modal('sale-modal', (`HEY`), true);
 
 	return (() => {
-		[createForm, createBalanceSheet].forEach(func => func())
+		[createForms, createBalanceSheet].forEach(func => func())
 
         document.getElementById('cash-change').addEventListener('click', changeModal.openModal)
 	})()
 
 
-
-	function createForm () {
-		const frag = document.createDocumentFragment();
-
+    
+    function createForms () {
+        create({
+            tag: 'ul',
+            class: 'tabs',
+            html: (`
+                <li id='sale-form-link' class='tab btn btn--large active'>SALE</li>
+                <li id='cash-out-form-link' class='tab btn btn--large'>CASH OUT</li>
+            `)
+        }, formContainer)
         create({
             tag   : 'button',
             id    : 'cash-change',
             class : 'btn',
             html  : 'Change'
-        }, frag)
+        }, formContainer)
+        
+        createSaleForm();
+        createCashOutForm();
+        
+        [...formContainer.querySelectorAll('.tabs .tab')].forEach(elm => {
+            elm.addEventListener('click', setActiveForm)
+        })
+        
+        function setActiveForm (event) {
+            formContainer.querySelector('.tabs .active').classList.remove('active');
+            formContainer.querySelector('form.active').classList.remove('active');
+            const targetId = event.target.id.substring(0, event.target.id.lastIndexOf('-'));
+            console.log(targetId);
+            document.getElementById(targetId).classList.add('active');
+            document.getElementById(event.target.id).classList.add('active');
+        }
+    }
+    
+	function createSaleForm () {
+		const frag = document.createDocumentFragment();
+
 
         const form = create({
-            tag  : 'form',
-            id   : 'CD-form',
-            attr : { action: ':javascript' }
+            tag   : 'form',
+            id    : 'sale-form',
+            class : 'active',
         });
-
-        create({
-            tag: 'div',
-            class: 'form-group-horizontal',
-            html: `
-                <span>Cash In</span>
-                <input type='radio' name='transaction-type' id='cash-in' checked />
-                <span>Cash Out</span>
-                <input type='radio' name='transaction-type' id='cash-out' />
-            `
-        }, form)
 
         create({
             tag   : 'div',
@@ -112,6 +129,50 @@ export default function Cashdrawer (_opening) {
 		frag.appendChild(form);
 		formContainer.appendChild(frag);
 	}
+    
+    function createCashOutForm () {
+        const frag = document.createDocumentFragment();
+
+        const form = create({
+            tag   : 'form',
+            id    : 'cash-out-form',
+        });
+
+        create({
+            tag   : 'div',
+            class : 'form-group-horizontal',
+            html  : `
+                <span id='tansaction-amount-text'>Amt Out: $</span>
+				<input type="number" min="0" id='ticket-price' />
+            `
+        }, form);
+
+		for (let bill in balance.bills) {
+            create({
+                tag   : 'div',
+                class : 'form-group',
+                html  : `
+                    <span>$${bill}</span>
+					<input type="number" min='0' max='${balance.bills[bill]}' id='form-bills-${bill}' />
+                `
+            }, form)
+		}
+
+		for (let coin in balance.coins) {
+			create({
+                tag   : 'div',
+                class : 'form-group',
+                html  : `
+                    <span>${coin}&cent;</span>
+					<input type="number" min='0' max='${balance.coins[coin]}' id='form-coins-${coin}' />
+                `
+            }, form)
+		}
+		create({tag: 'button', class:['btn', 'btn--xlarge'], html: 'SUBMIT', attr: {type:'submit'}}, form)
+
+		frag.appendChild(form);
+		formContainer.appendChild(frag);
+    }
 
 	function createBalanceSheet () {
 		const frag = document.createDocumentFragment();
@@ -224,5 +285,6 @@ export default function Cashdrawer (_opening) {
     }
 
 	function change () {}
+    
 
 }
